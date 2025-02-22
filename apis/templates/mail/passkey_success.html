@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Passkey Connection Successful</title>
+    <style>
+        /* Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Passkey Connection Successful</h2>
+        </div>
+        <div class="content">
+            <p>Dear, {{ name }},</p>
+            <p>{{ message }}</p>
+            <p>You can now access our services using your passkey.</p>
+            <p>Thank you for choosing our services.</p>
+            <p>Best regards,</p>
+            <p>{{ MRB }}</p>
+            <p><a href="{{ login_url }}" class="button">Login to Your Account</a></p>
+        </div>
+    </div>
+</body>
+</html>

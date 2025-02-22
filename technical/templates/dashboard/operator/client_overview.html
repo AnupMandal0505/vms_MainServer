@@ -1,0 +1,297 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Dashboard | GM List{% endblock %}
+{% load static %}
+{% block head %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+
+<!-- FontAwesome for Icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .container {
+        margin-top: 30px;
+    }
+
+    .progress {
+        height: 20px;
+    }
+
+     /* ✅ Card ke upar border */
+     .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative; /* ✅ Ensures the pseudo-element positions correctly */
+        border-radius: 5px; /* ✅ Rounded corners */
+        overflow: hidden; /* ✅ Keeps the border within the card */
+    }
+
+    /* ✅ Top Border */
+    .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px; /* ✅ Border thickness */
+        background-color: #007bff; /* ✅ Blue color (Change as needed) */
+        border-top-left-radius: 5px; /* ✅ Smooth edges */
+        border-top-right-radius: 5px;
+    }
+
+    .dt-buttons .btn {
+        margin-right: 5px;
+        border-radius: 8px;
+    }
+
+    .dt-buttons .btn-copy {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .dt-buttons .btn-csv {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .dt-buttons .btn-excel {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .dt-buttons .btn-pdf {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .dt-buttons .btn-print {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .dt-buttons .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+{% endblock head %}
+
+
+{% block content %}
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+    <p class="mb-0">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Client OverView</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <!-- User Profile Section.................................... -->
+                    <div class="col-md-4 text-center">
+                        <img src="https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/man-user-circle-icon.png"
+                            class="rounded-circle mb-3" style="width: 100px;" alt="User Image">
+                        <h4>{{client_user.first_name}} {{client_user.last_name}}</h4>
+                        <p class="text-muted"><b>USERNAME:</b> {{client_user.username}}</p>
+                        <p class="text-muted"><b>EMAIL:</b> {{client_user.email}}</p>
+
+
+                        {% if client_user.is_active == True %}
+                        <span class="badge bg-success">Active</span>
+                        {% else %}
+                        <span class="badge bg-danger">Deactivated</span>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- User Info Section -->
+                    <div class="col-md-8">
+                        <table class="table table-borderless">
+
+                            <tr>
+                                <th>Company Name:</th>
+                                <td>{{client_user.company_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>{{client_user.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>{{client_user.address}}</td>
+                            </tr>
+                            <tr>
+                                <th>Max Users:</th>
+                                <td>{{client_user.limits}}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Used:</th>
+                                <td>{{total_acc_used}}</td>
+                            </tr>
+                            <tr>
+                                <th>Created Date:</th>
+                                <td>{{client_user.created_at}}</td>
+                            </tr>
+                        </table>
+
+                        <!-- Usage Progress Bar -->
+                        <p><strong>Usage:</strong> {{client_user.limits}}/{{total_acc_used}} Users</p>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" role="progressbar"
+                                style="width: {{ usage_percentage }}%;" aria-valuenow="{{ usage_percentage }}"
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ usage_percentage }}%
+                            </div>
+                        </div>
+
+                        <!-- Upgrade & Edit Buttons -->
+                        <div class="mt-3 text-end">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                onclick="setEditModalData('{{ client_user.id }}', '{{ client_user.first_name }}', '{{ client_user.last_name }}', '{{ client_user.phone }}','{{ client_user.address }}')">
+                                Edit Profile
+                            </button>
+
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#userLimitFormModel"
+                                onclick="setuserLimitFormModelData('{{ client_user.id }}', '{{ client_user.limits }}')">
+                                Upgrade Plan
+                            </button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- client Side User detail and passkey............ -->
+
+        <div class="card shadow p-3 mt-4">
+            <table id="userTable" class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pass key</th>
+                        <th>UserName(ph.)</th>
+                        <th>Id</th>
+                        <th>Acc. Delete</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lis in acc_users %}
+                    <tr>
+                        <td>{{ lis.pass_key }}</td>
+                        <td>{{ lis.phone }}</td>
+                        <td>
+                            {% if lis.is_on_hold == False %}
+                            <span class="badge bg-success">Active</span>
+                            {% else %}
+                            <span class="badge bg-danger">Deactivated</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if lis.delete_account == False %}
+                            <span class="badge bg-primary">Active</span>
+                            {% else %}
+                            <span class="badge bg-warning">Deleted</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ClientUsereModal"
+                            onclick="setClientUSerModalData('{{ lis.id }}', '{{ lis.is_on_hold|lower }}', '{{ lis.delete_account|lower }}')">
+                                                            Plan
+                            </button>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+
+    </div>
+
+
+
+    <!-- pop import -->
+     {% include 'dashboard/operator/pop/upgrade_plan.html' %}
+
+     {% include 'dashboard/operator/pop/client_edit_profile.html' %}
+
+     {% include 'dashboard/operator/pop/client_account_manage.html' %}
+     <!-- pop import -->
+
+    <!-- opertor for upgrade plan mange plan etc operator related -->
+    <script src="{% static 'operator/operator.js' %}"></script>
+
+
+     <!-- DATA Table js.................................... -->
+    <!-- jQuery (Required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- DataTables Buttons Extension -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+
+    <!-- Buttons for Excel, CSV, PDF, Print -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <!-- ✅ Column Visibility Button -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                "paging": true, // Enables pagination
+                "searching": true, // Enables search bar
+                "ordering": true, // Enables column sorting
+                "info": true, // Shows table info (e.g., "Showing 1 to 10 of 50 entries")
+                "lengthChange": true, // ✅ Enables the dropdown to select number of rows per page
+                "lengthMenu": [5, 10, 25, 50, 100], // ✅ Defines options in the dropdown
+            dom: '<"top d-flex justify-content-between"l f><"button-container text-start mt-2" B>rtip',  
+                buttons: [
+                    { extend: 'csv', className: 'btn btn-csv', text: '<i class="fas fa-file-csv"></i> CSV' },
+                    { extend: 'excel', className: 'btn btn-excel', text: '<i class="fas fa-file-excel"></i> Excel' },
+                    { extend: 'pdf', className: 'btn btn-pdf', text: '<i class="fas fa-file-pdf"></i> PDF' },
+                    { extend: 'print', className: 'btn btn-print', text: '<i class="fas fa-print"></i> Print' },
+                    { extend: 'colvis', className: 'btn btn-secondary', text: '<i class="fas fa-columns"></i> Column Visibility' }
+                ]
+            });
+        });
+
+
+    </script>
+    <!-- DATA Table js End.................................... -->
+
+
+
+</div>
+
+
+{% endblock %}

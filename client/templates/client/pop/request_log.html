@@ -1,0 +1,64 @@
+<!-- Upgrade Plan Modal................................................................................. -->
+<div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="upgradeModalLabel">Upgrade Your Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="maxUserForm" method="POST" action="{% url 'client:request_log_urls' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" id="user_id">
+                
+                    <div class="mb-3">
+                        <label for="request_type" class="form-label">Request Type</label>
+                        <select class="form-control" name="request_type" id="request_type" required>
+                            <option value="">Select Request Type</option>
+                            <option value="increase_limit">Increase Limit</option>
+                            <option value="user_hold">User Hold</option>
+                        </select>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="note" class="form-label">Note</label>
+                        <textarea class="form-control" name="note" id="note" rows="3" placeholder="Enter any additional details..."></textarea>
+                    </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-warning">Submit Request</button>
+                    </div>
+                </form>
+                
+                
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-warning" id="updateNowBtn">Upgrade Now</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function setUpgradeModalData(userId, limits) {
+
+        document.getElementById("user_id").value = userId;
+        document.getElementById("limits").value = limits;
+   
+    }
+</script>
+
+
+<script>
+    document.getElementById("limits").addEventListener("input", function (e) {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Allow only numbers
+        // if (this.value.length > 10) {
+        //     this.value = this.value.slice(0, 10); // Limit input to 10 digits
+        // }
+    });
+</script>
+
+<!-- Upgrade Plan Modal................................................................................. -->

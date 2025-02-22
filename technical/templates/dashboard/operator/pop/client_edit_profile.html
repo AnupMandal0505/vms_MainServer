@@ -1,0 +1,64 @@
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" id="user_edit_id">
+                
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]{10}" maxlength="10" required>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" name="address" id="address" rows="3" required></textarea>
+                    </div>               
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function setEditModalData(userId, first_name, last_name,phone,address) {
+
+        document.getElementById("user_edit_id").value = userId;
+        document.getElementById("first_name").value = first_name;
+        document.getElementById("last_name").value = last_name;
+        document.getElementById("phone").value = phone;
+        document.getElementById("address").value = address;
+   
+    }
+</script>
+
+
+<script>
+    document.getElementById("phone").addEventListener("input", function (e) {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Allow only numbers
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10); // Limit input to 10 digits
+        }
+    });
+</script>
+
+

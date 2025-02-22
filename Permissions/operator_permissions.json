@@ -1,0 +1,19 @@
+{
+    "Permissions":[
+    {
+        "des":"Allow to Perform CRUD On view operator",
+        "name":"operator"
+    },
+       
+    {
+        "des":"Allow to Perform CRUD On client",
+        "name":"client"
+    },
+
+    {
+        "des":"Allow to Perform CRUD On user",
+        "name":"user"
+    }
+]
+
+}

@@ -1,0 +1,48 @@
+
+    <!-- Client user account activate deactivate edit Modal................................................................................ -->
+    <div class="modal fade" id="ClientUsereModal" tabindex="-1" aria-labelledby="ClientUsereModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="ClientUserModalLabel">
+                        <i class="fas fa-user-cog me-2"></i> Manage User Account
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="accountManageForm" method="POST" action="{% url 'operator:manage_account' %}">
+                        {% csrf_token %}
+                        <input type="text" name="user_id" id="manage_account_id" hidden>
+            
+                        <!-- Activate / Deactivate -->
+                        <div class="mb-3">
+                            <label class="form-label">Account Status</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="activate" value="activate">
+                                <label class="form-check-label" for="activate">Activate</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="deactivate" value="deactivate">
+                                <label class="form-check-label" for="deactivate">Deactivate</label>
+                            </div>
+                        </div>
+            
+                        <!-- Delete Account -->
+                        <div class="mb-3">
+                            <label class="form-label">Delete Account</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="delete" id="delete">
+                                <label class="form-check-label text-danger" for="delete">Delete this account</label>
+                            </div>
+                        </div>
+            
+                        <button type="submit" class="btn btn-success w-100">Submit</button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+        <!-- Client user account activate deactivate edit Modal End................................................................................ -->
+    
