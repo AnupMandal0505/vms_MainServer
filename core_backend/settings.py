@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'core_backend.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('postgresql://mrb_4ecq_user:Pcy0dXubmrqWGsvGAAVcZABUPMa5nijB@dpg-cut22ojtq21c73bb7gu0-a/mrb_4ecq')
+        default=os.getenv('DATABASE_URL')
     )
 }
 # Password validation
@@ -198,6 +198,7 @@ CORS_ALLOW_HEADERS = [
     "authorization",
     "content-type",
 ]
+CSRF_TRUSTED_ORIGINS='https://vms-mainserver.onrender.com'
 
 
 # CORS_ALLOW_ALL_ORIGINS = False
