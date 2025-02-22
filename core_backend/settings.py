@@ -31,7 +31,7 @@ DEBUG = os.getenv('DEBUG', 'False')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vms-mainserver.onrender.com']
+ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1']
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # ALLOWED_HOSTS = ['servicebasedauthentication.onrender.com', '127.0.0.1', 'localhost',"192.168.4.224"]
@@ -198,7 +198,11 @@ CORS_ALLOW_HEADERS = [
     "authorization",
     "content-type",
 ]
-CSRF_TRUSTED_ORIGINS='https://vms-mainserver.onrender.com'
+CSRF_TRUSTED_ORIGINS = [
+    "https://vms-mainserver.onrender.com"
+]
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # CORS_ALLOW_ALL_ORIGINS = False
