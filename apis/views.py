@@ -90,7 +90,7 @@ class PasskeyViewSet(viewsets.ViewSet):
         # if serializer.is_valid():
         passkey = request.data.get("passkey")  # ✅ Correct way to get passkey
         otp = request.data.get("otp")
-        phone = request.data.get("connection_id")
+        phone = request.data.get("unique_phone")
         # client_user = request.data.get("client_user")
         print(request.data)
         try:

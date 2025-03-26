@@ -24,17 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.getenv('SECRET_KEY',)
-SECRET_KEY='django-insecure-$19ohzt@k1k!q7r0qs2!p1=p0a=hnzg2m)@u8l&pths=#7!mll'
-# Optional: Set DEBUG dynamically
-DEBUG = os.getenv('DEBUG', 'False')
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback_secret")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1']
+# ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1','192.168.54.224',]
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = ["*"]
 
-# ALLOWED_HOSTS = ['servicebasedauthentication.onrender.com', '127.0.0.1', 'localhost',"192.168.4.224"]
+DOMAIN_NAME = 'http://192.168.158.224:4000'  # Replace with your actual domain
 
 # Application definition
 
@@ -58,7 +56,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "home_server.ClientUser"
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  #  Add this at the top
+    'corsheaders.middleware.CorsMiddleware',  #  Add this at the top
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -90,22 +88,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core_backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# ex:postgresql://mrb_4ecq_user:Pcy0dXubmrqWGsvGAAVcZABUPMa5nijB@dpg-cut22ojtq21c73bb7gu0-a.oregon-postgres.render.com/mrb_4ecq
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://mrb_4ecq_user:Pcy0dXubmrqWGsvGAAVcZABUPMa5nijB@dpg-cut22ojtq21c73bb7gu0-a.oregon-postgres.render.com/mrb_4ecq'
-    )
+    'default': dj_database_url.config(default=os.getenv("DATABASE_URL", "postgresql://user:pass@db:5432/dbname"))
 }
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -140,38 +136,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 # STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-# STATIC_URL = "/static/"
 
-# # If using local static files
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-# ]
-
-# # If collecting static files for deployment
-# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATIC_URL = '/static/'
-
-# Define the location of static files for development
-STATIC_ROOT =  BASE_DIR / "staticfiles"
-
-
-# Whitenoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-MEDIA_ROOT = BASE_DIR
-
-
+# Add these settings to handle media files
+MEDIA_URL = '/media/'  # URL to access the uploaded files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  
 
 
 
@@ -185,29 +168,52 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 
-# Allow all origins
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
+# Add CSRF protection
+# CSRF_COOKIE_SECURE = True 
+CSRF_TRUSTED_ORIGINS = [
+    '*',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    '*',
+]
+
+
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Restrict allowed methods
-CORS_ALLOW_METHODS = [
-    "GET",  # ✅ Allow only safe methods like GET
-    "OPTIONS",
-]
+CORS_ALLOW_CREDENTIALS = True
 
-# Allow all headers (needed for security tokens, etc.)
-CORS_ALLOW_HEADERS = [
-    "authorization",
-    "content-type",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "https://vms-mainserver.onrender.com"
-]
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
+ADMIN_SITE_HEADER = 'Appointment Server Admin'
+ADMIN_SITE_TITLE = 'Appointment Server'
 
 # CORS_ALLOW_ALL_ORIGINS = False
 # CORS_ALLOWED_ORIGIN_REGEXES = [
 #     r"^https://.*\.yourdomain\.com$",  # ✅ Allow all subdomains of yourdomain.com
 #     r"^https://your-client-.*\.com$",  # ✅ Example: Allow dynamic client domains
 # ]
+
+
+# Add this to your settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
