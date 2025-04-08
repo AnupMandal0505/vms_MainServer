@@ -30,7 +30,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1','192.168.54.224',]
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['vms.casesmfc.com','admin.vms.casesmfc.com']
 
 DOMAIN_NAME = 'http://192.168.158.224:4000'  # Replace with your actual domain
 
@@ -89,17 +89,24 @@ WSGI_APPLICATION = 'core_backend.wsgi.application'
 
 
 
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.getenv("DATABASE_URL", "postgresql://user:pass@db:5432/dbname"))
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv("DATABASE_URL", "postgresql://user:pass@db:5432/dbname"))
-}
-
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+#     }
+# }
 
 
 # Password validation
@@ -168,23 +175,30 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
 
 # Add CSRF protection
-# CSRF_COOKIE_SECURE = True 
-CSRF_TRUSTED_ORIGINS = [
-    '*',
-]
+CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
 
-CORS_ALLOWED_ORIGINS = [
-    '*',
-]
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
+CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+# CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
+
 
 ADMIN_SITE_HEADER = 'Appointment Server Admin'
 ADMIN_SITE_TITLE = 'Appointment Server'
