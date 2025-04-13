@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-import dj_database_url
+# import dj_database_url
 
 from dotenv import load_dotenv
 load_dotenv()  # Load the environment variables from the .env file
@@ -30,9 +30,9 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1','192.168.54.224',]
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-ALLOWED_HOSTS = ['vms.casesmfc.com','admin.vms.casesmfc.com']
+ALLOWED_HOSTS = ['casemfc.com','194.164.149.231','172.22.226.236','127.0.0.1','localhost']
 
-DOMAIN_NAME = 'http://192.168.158.224:4000'  # Replace with your actual domain
+DOMAIN_NAME = os.getenv("API_BASE_URL")
 
 # Application definition
 
@@ -95,18 +95,28 @@ WSGI_APPLICATION = 'core_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'your_db_name'),
+        'USER': os.getenv('POSTGRES_USER', 'your_db_user'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'your_db_password'),
+        'HOST': os.getenv('DB_HOST', 'db'),  # "db" Docker Compose service ka naam hai
+        'PORT': os.getenv('DB_PORT', '5432'),  # PostgreSQL ka default port
     }
 }
 
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
-#     }
-# }
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+    }
+}
+
+
+# Celery
+CELERY_BROKER_URL = os.environ.get(
+    'RABBITMQ_URL', 'amqp://guest:guest@msgbroker:5672//'
+)
 
 
 # Password validation
@@ -147,22 +157,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 # STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-
-# Add these settings to handle media files
-MEDIA_URL = '/media/'  # URL to access the uploaded files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  
-
 
 
 # Email Section................
@@ -175,39 +180,32 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
+
 
 # Add CSRF protection
-CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
+# CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
-CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
+# CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
 
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_METHODS = (
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# )
 
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 
 
 ADMIN_SITE_HEADER = 'Appointment Server Admin'
 ADMIN_SITE_TITLE = 'Appointment Server'
 
-# CORS_ALLOW_ALL_ORIGINS = False
-# CORS_ALLOWED_ORIGIN_REGEXES = [
-#     r"^https://.*\.yourdomain\.com$",  # ✅ Allow all subdomains of yourdomain.com
-#     r"^https://your-client-.*\.com$",  # ✅ Example: Allow dynamic client domains
-# ]
 
 
 # Add this to your settings.py
