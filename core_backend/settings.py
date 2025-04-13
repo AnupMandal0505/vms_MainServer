@@ -30,7 +30,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1','192.168.54.224',]
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-ALLOWED_HOSTS = ['vms.casesmfc.com','admin.vms.casesmfc.com']
+ALLOWED_HOSTS = ['casemfc.com','194.164.149.231','172.22.226.236','127.0.0.1','localhost']
 
 DOMAIN_NAME = 'http://192.168.158.224:4000'  # Replace with your actual domain
 
@@ -175,39 +175,32 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
+_SECURE = False
 
 # Add CSRF protection
-CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
+# CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
-CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
+# CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
 
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_METHODS = (
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# )
 
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 
 
 ADMIN_SITE_HEADER = 'Appointment Server Admin'
 ADMIN_SITE_TITLE = 'Appointment Server'
 
-# CORS_ALLOW_ALL_ORIGINS = False
-# CORS_ALLOWED_ORIGIN_REGEXES = [
-#     r"^https://.*\.yourdomain\.com$",  # ✅ Allow all subdomains of yourdomain.com
-#     r"^https://your-client-.*\.com$",  # ✅ Example: Allow dynamic client domains
-# ]
 
 
 # Add this to your settings.py
