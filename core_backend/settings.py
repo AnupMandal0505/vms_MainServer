@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'apis',
     'whitenoise',
     'corsheaders',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
 
 ]
 
@@ -219,3 +222,7 @@ LOGGING = {
         },
     },
 }
+
+
+
+SITE_ID = 1
