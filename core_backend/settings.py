@@ -183,11 +183,11 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 # Add CSRF protection
-# CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
+CSRF_TRUSTED_ORIGINS = ['https://casemfc.com']
 
 # SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
 
