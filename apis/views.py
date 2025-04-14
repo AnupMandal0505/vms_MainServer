@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from home_server.models.account import ManageAccount
 from .serializers.PasskeySerializers import PasskeySerializer
 import random
+<<<<<<< HEAD
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -43,6 +44,47 @@ def mail(name,email,otp,subject,message,template_name):
     except Exception as e:
         print("Error sending email:", e)
         raise Exception("Problem sending email")
+=======
+# from django.core.mail import EmailMultiAlternatives
+# from django.template.loader import render_to_string
+# from django.conf import settings
+from apis.tasks import send_verification_email
+
+
+
+# def mail(name,email,otp,subject,message,template_name):
+#     try:
+#         from_email = settings.EMAIL_HOST_USER
+        
+#         # Correct template_path and render the HTML template with the provided data
+#         # template_path = 'mail/otp.html'
+#         # Render the HTML template to a string
+#         template_path = f'mail/{template_name}.html'
+#         context = {
+#             'name': name,
+#             'otp': otp,
+#             'message':message,
+#             'email':email,
+#         }
+        
+#         # Render the HTML template to a string
+#         message = render_to_string(template_path, context)
+        
+#         to = "anupmandal828109@gmail.com"
+        
+#         # Create an email message object and attach the HTML message
+#         msg = EmailMultiAlternatives(subject, '', from_email, [to])
+#         msg.attach_alternative(message, 'text/html')
+#         try:
+#             msg.send()
+#         except Exception as e:
+#             print("Error sending email:", e)
+#             raise Exception("Problem sending email check password")
+        
+#     except Exception as e:
+#         print("Error sending email:", e)
+#         raise Exception("Problem sending email")
+>>>>>>> dev_anup
 
 
 
@@ -73,7 +115,20 @@ class PasskeyViewSet(viewsets.ViewSet):
             passkey_obj.save()
 
             # Send emails
+<<<<<<< HEAD
             mail(passkey_obj.client_user.first_name, passkey_obj.client_user.email, new_otp, 'OTP Verification', 'Please enter this OTP to complete the verification process.','otp')
+=======
+            # mail(passkey_obj.client_user.first_name, passkey_obj.client_user.email, new_otp, 'OTP Verification', 'Please enter this OTP to complete the verification process.','otp')
+            send_verification_email.delay(
+                passkey_obj.client_user.first_name,
+                passkey_obj.client_user.email,
+                new_otp,
+                'OTP Verification',
+                'Please enter this OTP to complete the verification process.',
+                'otp'
+            )
+
+>>>>>>> dev_anup
             
             return Response({"success": f"Email sent to {passkey_obj.client_user.email}"}, status=status.HTTP_200_OK)
 
@@ -111,7 +166,20 @@ class PasskeyViewSet(viewsets.ViewSet):
 
 
             # Send emails
+<<<<<<< HEAD
             mail(passkey_obj.client_user.first_name, passkey_obj.client_user.email, 'new_otp', 'Passkey Connection Successful', 'Congratulations! Your passkey connection has been successfully established.','passkey_success')
+=======
+            # mail(passkey_obj.client_user.first_name, passkey_obj.client_user.email, 'new_otp', 'Passkey Connection Successful', 'Congratulations! Your passkey connection has been successfully established.','passkey_success')
+            send_verification_email.delay(
+                passkey_obj.client_user.first_name,
+                passkey_obj.client_user.email,
+                'new_otp',
+                'Passkey Connection Successful',
+                'Passkey Connection Successful', 'Congratulations! Your passkey connection has been successfully established.',
+                'passkey_success'
+            )
+
+>>>>>>> dev_anup
             
             return Response({"success": "Saved successfully"}, status=status.HTTP_200_OK)
 

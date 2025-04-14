@@ -25,12 +25,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback_secret")
+<<<<<<< HEAD
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS = ['vms-mainserver.onrender.com','127.0.0.1','192.168.54.224',]
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 ALLOWED_HOSTS = ['casemfc.com','194.164.149.231','172.22.226.236','127.0.0.1','localhost']
+=======
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(',')
+>>>>>>> dev_anup
 
 DOMAIN_NAME = os.getenv("API_BASE_URL")
 
@@ -89,10 +97,13 @@ WSGI_APPLICATION = 'core_backend.wsgi.application'
 
 
 
+<<<<<<< HEAD
 # DATABASES = {
 #     'default': dj_database_url.config(default=os.getenv("DATABASE_URL", "postgresql://user:pass@db:5432/dbname"))
 # }
 
+=======
+>>>>>>> dev_anup
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -150,8 +161,11 @@ USE_I18N = True
 USE_TZ = True
 
 
+<<<<<<< HEAD
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+=======
+>>>>>>> dev_anup
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -183,11 +197,20 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 # Add CSRF protection
+<<<<<<< HEAD
 # CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com']
 
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
+=======
+# CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com','http://172.22.226.236:8000']
+
+# SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+CSRF_COOKIE_SECURE = True
+>>>>>>> dev_anup
 
 # CORS_ALLOWED_ORIGINS = ['https://vms.casesmfc.com','https://admin.vms.casesmfc.com']
 

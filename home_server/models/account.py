@@ -18,12 +18,20 @@ class ManageAccount(BaseModel):
     is_on_hold = models.BooleanField(default=False)  # Hold status
     delete_account = models.BooleanField(default=False)
     otp = models.CharField(max_length=10, blank=True, null=True)
+<<<<<<< HEAD
+=======
+    
+>>>>>>> dev_anup
 
     def __str__(self):
         return f"{self.phone} ({'On Hold' if self.is_on_hold else 'Active'})"
 
     class Meta:
+<<<<<<< HEAD
         db_table="manage_account"
+=======
+        db_table = "ManageAccount"
+>>>>>>> dev_anup
   
 
 
@@ -39,5 +47,9 @@ class RequestLog(BaseModel):
         return f"{self.client_user} - {self.request_type} at {self.created_at}"
     
     class Meta:
+<<<<<<< HEAD
         db_table="request_log"
+=======
+        db_table = "RequestLog"
+>>>>>>> dev_anup
     

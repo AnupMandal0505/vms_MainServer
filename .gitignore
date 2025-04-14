@@ -30,3 +30,23 @@ media/
 # Environments
 venv/
 .env/
+<<<<<<< HEAD
+=======
+
+staticfiles/
+static_vmsm/
+redis_vmsm/
+postgres_vmsm/
+ngnix.conf/
+
+logs/
+db_backup/
+
+
+vms_postgres_data/
+vms_redis_data/
+db_backup/
+rabbitmq_data/
+static_vms/
+media_vms/
+>>>>>>> dev_anup
