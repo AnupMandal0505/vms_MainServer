@@ -17,5 +17,5 @@ class StaticViewSitemap(Sitemap):
 
     def get_urls(self, site=None, **kwargs):
         from django.contrib.sites.models import Site
-        site = Site(domain="casemfc.com", name="casemfc.com")
+        site = Site(domain="vms.casemfc.com", name="vms.casemfc.com")
         return super().get_urls(site=site, **kwargs)

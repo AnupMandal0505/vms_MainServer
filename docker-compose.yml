@@ -84,7 +84,7 @@ services:
     #   - "8000:8000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`casemfc.com`)"
+      - "traefik.http.routers.web.rule=Host(`vms.casemfc.com`)"
       - "traefik.http.services.web.loadbalancer.server.port=8000"
       - "traefik.http.routers.web.entrypoints=websecure"
       - "traefik.http.routers.web.tls.certresolver=myresolver"
