@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'apis',
     'whitenoise',
     'corsheaders',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
 ]
 

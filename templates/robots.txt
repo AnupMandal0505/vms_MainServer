@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://casemfc.com/sitemap.xml
+Sitemap: https://vms.casemfc.com/sitemap.xml
