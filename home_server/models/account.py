@@ -18,13 +18,13 @@ class ManageAccount(BaseModel):
     is_on_hold = models.BooleanField(default=False)  # Hold status
     delete_account = models.BooleanField(default=False)
     otp = models.CharField(max_length=10, blank=True, null=True)
+    
 
     def __str__(self):
         return f"{self.phone} ({'On Hold' if self.is_on_hold else 'Active'})"
 
     class Meta:
         db_table = "ManageAccount"
-
   
 
 
@@ -41,5 +41,4 @@ class RequestLog(BaseModel):
     
     class Meta:
         db_table = "RequestLog"
-
     

@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "fallback_secret")
 
-
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(',')
@@ -49,9 +49,6 @@ INSTALLED_APPS = [
     'apis',
     'whitenoise',
     'corsheaders',
-    'django.contrib.sites',
-    'django.contrib.sitemaps',
-
 
 ]
 
@@ -74,7 +71,7 @@ ROOT_URLCONF = 'core_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,6 +83,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'core_backend.wsgi.application'
 
@@ -148,6 +146,7 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -176,6 +175,9 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
 
 
+
+# Add CSRF protection
+# CSRF_TRUSTED_ORIGINS = ['https://vms.casesmfc.com','http://172.22.226.236:8000']
 
 # SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
@@ -222,7 +224,3 @@ LOGGING = {
         },
     },
 }
-
-
-
-SITE_ID = 1

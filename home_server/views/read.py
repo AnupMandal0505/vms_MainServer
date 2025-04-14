@@ -30,10 +30,8 @@ class Auth(View):
             last_name = request.POST.get('last_name').upper()
             company_name = request.POST.get('company_name').upper()
             address = request.POST.get('address').upper()
-
             email = request.POST.get('email')
             phone = request.POST.get('phone_number')
-
             password = request.POST.get('password')
 
             # Check for duplicate username
@@ -86,7 +84,6 @@ class Signin(View):
     def post(self, request):
         print(request.POST)
         identifier=request.POST['identifier']
-
         password=request.POST['password']
         
         try:

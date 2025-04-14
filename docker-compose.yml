@@ -1,31 +1,6 @@
-
 version: '3.8'
 
 services:
-  reverse-proxy:
-    image: traefik:v3.1
-    command:
-      # - "--api.insecure=true"
-      - "--providers.docker"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=aws28052003@gmail.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-    ports:
-      #http
-      - "80:80"
-      #https
-      - "443:443"
-      #web ui
-      #- "8080:8080"
-    volumes:
-      - letsencrypt:/letsencrypt
-      #so that taffic can lisin to docker application
-      - /var/run/docker.sock:/var/run/docker.sock
   db:
     image: postgres:15
     container_name: casemfc_postgres
@@ -62,9 +37,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    deploy:
-      mode: replicated
-      replicas: 2
     restart: always
     depends_on:
       db:
@@ -80,14 +52,8 @@ services:
       - media_vms:/vms/media
     # expose:
     #   - "8000"
-    # ports:
-    #   - "8000:8000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`vms.casemfc.com`)"
-      - "traefik.http.services.web.loadbalancer.server.port=8000"
-      - "traefik.http.routers.web.entrypoints=websecure"
-      - "traefik.http.routers.web.tls.certresolver=myresolver"
+    ports:
+      - "8000:8000"
 
 
   msgbroker:
@@ -121,7 +87,6 @@ services:
 
 
 volumes:
-  letsencrypt:
   vms_postgres_data:
   vms_redis_data:
   static_vms:

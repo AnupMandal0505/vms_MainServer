@@ -30,10 +30,6 @@ media/
 # Environments
 venv/
 .env/
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 
 staticfiles/
 static_vmsm/
@@ -51,5 +47,3 @@ db_backup/
 rabbitmq_data/
 static_vms/
 media_vms/
->>>>>>> dev_anup
->>>>>>> dev_anup_squashed

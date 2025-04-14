@@ -19,6 +19,7 @@ from django.urls import path,include
 
 from django.contrib.sitemaps.views import sitemap
 from home_server.sitemaps import StaticViewSitemap
+from django.views.generic import TemplateView
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -33,4 +34,8 @@ urlpatterns = [
 
     # sitemap.xml route
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+]
+
+urlpatterns += [
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 ]

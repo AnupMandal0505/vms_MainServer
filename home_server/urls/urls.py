@@ -2,8 +2,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 # from ClientUser.views.create import LoginClientUserViewset
 from home_server.views import read
-
-
 # from ClientUser.clinet_views import read
 
 # router = DefaultRouter()
