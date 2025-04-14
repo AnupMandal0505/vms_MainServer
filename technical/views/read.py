@@ -20,11 +20,35 @@ class ClientList(View):
 
     
     
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+import uuid
+
+>>>>>>> dev_anup
+>>>>>>> dev_anup_squashed
 class ClientOverView(View):
     template = "dashboard/operator/client_overview.html"
     def get(self, request):
         
+<<<<<<< HEAD
         client_user=ClientUser.objects.get(id=request.GET.get("id"))
+=======
+<<<<<<< HEAD
+        client_user=ClientUser.objects.get(id=request.GET.get("id"))
+=======
+        client_id_str = request.GET.get("id")  # instead of "client_id"
+
+        # client_user=ClientUser.objects.get(id=uuid.UUID(request.GET.get("client_id")))
+        try:
+            client_id = uuid.UUID(client_id_str)
+            client_user = ClientUser.objects.get(id=client_id)
+        except (ValueError, TypeError, ClientUser.DoesNotExist):
+            messages.error(request, "Invalid or missing client ID.")
+            return redirect("some_fallback_url")  # Optional fallback
+>>>>>>> dev_anup
+>>>>>>> dev_anup_squashed
 
         # Get all ManageAccount objects related to the client_user
         acc_users = ManageAccount.objects.filter(client_user=request.GET.get("id"))
@@ -147,16 +171,39 @@ class ManageAccountID(View): # Control Client ID activate/deactivate and Client 
             acc.save()
 
             messages.success(request, "Plan updated successfully!")
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> dev_anup_squashed
             return redirect(f"operator:client_overview_urls", acc.client_user.id)
 
         except ValueError:
             messages.error(request, "Invalid number format.")
             return redirect(f"operator:client_overview_urls", acc.client_user.id)
+<<<<<<< HEAD
+=======
+=======
+            return redirect(f"{reverse('operator:client_overview_urls')}?id={acc.client_user.id}")
+            # return redirect("operator:client_overview_urls")
+
+        except ValueError:
+            messages.error(request, "Invalid number format.")
+            return redirect(f"{reverse('operator:client_overview_urls')}?id={acc.client_user.id}")
+>>>>>>> dev_anup
+>>>>>>> dev_anup_squashed
 
 
         except ManageAccount.DoesNotExist:
             messages.error(request, "User not found.")
+<<<<<<< HEAD
             return redirect(f"operator:client_overview_urls", acc.client_user.id)
+=======
+<<<<<<< HEAD
+            return redirect(f"operator:client_overview_urls", acc.client_user.id)
+=======
+            return redirect(f"{reverse('operator:client_overview_urls')}?id={acc.client_user.id}")
+>>>>>>> dev_anup
+>>>>>>> dev_anup_squashed
 
 
 
