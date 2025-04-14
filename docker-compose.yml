@@ -62,10 +62,6 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dev_anup_squashed
   # celery:
   #   build: .
   #   command: celery -A core_vms worker --loglevel=info
@@ -75,9 +71,7 @@ services:
   #   depends_on:
   #     - msgbroker
   #     - web
-<<<<<<< HEAD
-=======
-=======
+
   celery:
     build: .
     command: celery -A core_vms worker --loglevel=info
@@ -87,8 +81,6 @@ services:
     depends_on:
       - msgbroker
       - web
->>>>>>> dev_anup
->>>>>>> dev_anup_squashed
 
   # nginx:
   #   image: nginx:latest
